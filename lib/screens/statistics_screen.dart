@@ -32,8 +32,8 @@ class StatisticsScreen extends StatelessWidget {
     final sections = totals.entries.map((e) {
       final percent = (e.value / totalAmount * 100).toStringAsFixed(1);
       return PieChartSectionData(
-        color: Colors.primaries[totals.keys.toList().indexOf(e.key) %
-            Colors.primaries.length],
+        color: Colors.primaries[
+        totals.keys.toList().indexOf(e.key) % Colors.primaries.length],
         value: e.value,
         title: '${e.key}\n$percent%',
         radius: 80,
@@ -47,7 +47,7 @@ class StatisticsScreen extends StatelessWidget {
 
     return Scaffold(
       appBar: AppBar(title: const Text('Статистика расходов')),
-      body: Padding(
+      body: SingleChildScrollView( // 👈 добавили скролл, чтобы не было overflow
         padding: const EdgeInsets.all(16),
         child: Column(
           children: [
@@ -66,13 +66,27 @@ class StatisticsScreen extends StatelessWidget {
                 ),
               ),
             ),
-            const SizedBox(height: 20),
-            const Text('Суммы по категориям:'),
-            ...totals.entries.map((e) => ListTile(
-              leading: const Icon(Icons.label),
-              title: Text(e.key),
-              trailing: Text('${e.value.toStringAsFixed(2)} ₽'),
-            )),
+            const SizedBox(height: 30),
+            const Text(
+              'Суммы по категориям:',
+              style: TextStyle(fontSize: 16, fontWeight: FontWeight.w600),
+            ),
+            const SizedBox(height: 10),
+
+            // --- Список категорий ---
+            ListView.builder(
+              physics: const NeverScrollableScrollPhysics(),
+              shrinkWrap: true, // 👈 чтобы Column понимал высоту
+              itemCount: totals.length,
+              itemBuilder: (context, index) {
+                final entry = totals.entries.elementAt(index);
+                return ListTile(
+                  leading: const Icon(Icons.attach_money_outlined),
+                  title: Text(entry.key),
+                  trailing: Text('${entry.value.toStringAsFixed(2)} ₽'),
+                );
+              },
+            ),
           ],
         ),
       ),

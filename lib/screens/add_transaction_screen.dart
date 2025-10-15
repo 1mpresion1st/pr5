@@ -35,35 +35,139 @@ class _AddTransactionScreenState extends State<AddTransactionScreen> {
       body: Padding(
         padding: const EdgeInsets.all(16),
         child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            DropdownButton<String>(
-              value: _selectedType,
-              items: ['Доход', 'Расход']
-                  .map((e) => DropdownMenuItem(value: e, child: Text(e)))
-                  .toList(),
-              onChanged: (val) {
-                setState(() {
-                  _selectedType = val!;
-                });
-              },
+            const Text(
+              'Тип операции:',
+              style: TextStyle(fontSize: 16, fontWeight: FontWeight.w500),
             ),
+            const SizedBox(height: 10),
+
+            // --- КРАСИВЫЙ ВЫБОР ТИПА (Доход / Расход) ---
+            Row(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                Expanded(
+                  child: GestureDetector(
+                    onTap: () {
+                      setState(() => _selectedType = 'Доход');
+                    },
+                    child: AnimatedContainer(
+                      duration: const Duration(milliseconds: 200),
+                      padding: const EdgeInsets.symmetric(vertical: 14),
+                      decoration: BoxDecoration(
+                        color: _selectedType == 'Доход'
+                            ? Colors.green.shade100
+                            : Colors.white,
+                        border: Border.all(
+                          color: _selectedType == 'Доход'
+                              ? Colors.green
+                              : Colors.grey.shade400,
+                        ),
+                        borderRadius: const BorderRadius.only(
+                          topLeft: Radius.circular(8),
+                          bottomLeft: Radius.circular(8),
+                        ),
+                      ),
+                      child: Center(
+                        child: Text(
+                          'Доход',
+                          style: TextStyle(
+                            fontWeight: FontWeight.w600,
+                            color: _selectedType == 'Доход'
+                                ? Colors.green.shade800
+                                : Colors.black87,
+                          ),
+                        ),
+                      ),
+                    ),
+                  ),
+                ),
+                Expanded(
+                  child: GestureDetector(
+                    onTap: () {
+                      setState(() => _selectedType = 'Расход');
+                    },
+                    child: AnimatedContainer(
+                      duration: const Duration(milliseconds: 200),
+                      padding: const EdgeInsets.symmetric(vertical: 14),
+                      decoration: BoxDecoration(
+                        color: _selectedType == 'Расход'
+                            ? Colors.red.shade100
+                            : Colors.white,
+                        border: Border.all(
+                          color: _selectedType == 'Расход'
+                              ? Colors.red
+                              : Colors.grey.shade400,
+                        ),
+                        borderRadius: const BorderRadius.only(
+                          topRight: Radius.circular(8),
+                          bottomRight: Radius.circular(8),
+                        ),
+                      ),
+                      child: Center(
+                        child: Text(
+                          'Расход',
+                          style: TextStyle(
+                            fontWeight: FontWeight.w600,
+                            color: _selectedType == 'Расход'
+                                ? Colors.red.shade800
+                                : Colors.black87,
+                          ),
+                        ),
+                      ),
+                    ),
+                  ),
+                ),
+              ],
+            ),
+
+            const SizedBox(height: 20),
+
+            // --- поля ввода ---
             TextField(
               controller: _amountController,
               keyboardType: TextInputType.number,
-              decoration: const InputDecoration(labelText: 'Сумма'),
+              decoration: const InputDecoration(
+                labelText: 'Сумма',
+                border: OutlineInputBorder(),
+              ),
             ),
+            const SizedBox(height: 12),
             TextField(
               controller: _categoryController,
-              decoration: const InputDecoration(labelText: 'Категория'),
+              decoration: const InputDecoration(
+                labelText: 'Категория',
+                border: OutlineInputBorder(),
+              ),
             ),
+            const SizedBox(height: 12),
             TextField(
               controller: _commentController,
-              decoration: const InputDecoration(labelText: 'Комментарий'),
+              decoration: const InputDecoration(
+                labelText: 'Комментарий',
+                border: OutlineInputBorder(),
+              ),
             ),
+
             const SizedBox(height: 20),
-            ElevatedButton(
-              onPressed: _saveTransaction,
-              child: const Text('Сохранить'),
+
+            // --- кнопка сохранить ---
+            SizedBox(
+              width: double.infinity,
+              height: 48,
+              child: ElevatedButton.icon(
+                icon: const Icon(Icons.check),
+                label: const Text('Сохранить операцию'),
+                onPressed: _saveTransaction,
+                style: ElevatedButton.styleFrom(
+                  backgroundColor: Colors.deepPurple,
+                  foregroundColor: Colors.white,
+                  shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(10),
+                  ),
+                ),
+              ),
             ),
           ],
         ),

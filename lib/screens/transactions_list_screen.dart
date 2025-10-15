@@ -48,6 +48,9 @@ class _TransactionsListScreenState extends State<TransactionsListScreen> {
               onDelete: () {
                 widget.onDelete(t);
                 setState(() {});
+                ScaffoldMessenger.of(context).showSnackBar(
+                  const SnackBar(content: Text('Операция удалена')),
+                );
               },
             ),
           );

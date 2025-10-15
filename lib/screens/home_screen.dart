@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import '../models/transaction.dart';
+import '../data/demo_data.dart'; // 👈 импорт стартовых данных
 import 'add_transaction_screen.dart';
 import 'transactions_list_screen.dart';
 import 'statistics_screen.dart';
@@ -10,7 +11,8 @@ class HomeScreen extends StatefulWidget {
 }
 
 class _HomeScreenState extends State<HomeScreen> {
-  List<Transaction> _transactions = [];
+  // Подгружаем стартовые данные
+  List<Transaction> _transactions = List.from(demoTransactions);
 
   // --- вычисление общего баланса ---
   double get _totalBalance {
@@ -23,21 +25,18 @@ class _HomeScreenState extends State<HomeScreen> {
     return income - expense;
   }
 
-  // --- добавление операции ---
   void _addTransaction(Transaction transaction) {
     setState(() {
       _transactions.add(transaction);
     });
   }
 
-  // --- удаление операции ---
   void _deleteTransaction(Transaction transaction) {
     setState(() {
       _transactions.remove(transaction);
     });
   }
 
-  // --- подсчёт по категориям (для будущего анализа) ---
   Map<String, double> _getCategoryTotals() {
     Map<String, double> totals = {};
     for (var t in _transactions) {
@@ -62,7 +61,6 @@ class _HomeScreenState extends State<HomeScreen> {
         child: SingleChildScrollView(
           child: Column(
             children: [
-              // ---- общий баланс ----
               Text(
                 'Текущий баланс: ${_totalBalance.toStringAsFixed(2)} ₽',
                 style: const TextStyle(
@@ -71,11 +69,9 @@ class _HomeScreenState extends State<HomeScreen> {
                 ),
               ),
               const SizedBox(height: 20),
-
-              // ---- кнопка добавления ----
-              ElevatedButton.icon(
-                icon: const Icon(Icons.add),
-                label: const Text('Добавить операцию'),
+              _buildWideButton(
+                icon: Icons.add,
+                text: 'Добавить операцию',
                 onPressed: () async {
                   final result = await Navigator.push(
                     context,
@@ -89,11 +85,9 @@ class _HomeScreenState extends State<HomeScreen> {
                 },
               ),
               const SizedBox(height: 10),
-
-              // ---- кнопка просмотра списка ----
-              ElevatedButton.icon(
-                icon: const Icon(Icons.list),
-                label: const Text('Список операций'),
+              _buildWideButton(
+                icon: Icons.list,
+                text: 'Список операций',
                 onPressed: () {
                   Navigator.push(
                     context,
@@ -107,11 +101,9 @@ class _HomeScreenState extends State<HomeScreen> {
                 },
               ),
               const SizedBox(height: 10),
-
-              // ---- кнопка статистики ----
-              ElevatedButton.icon(
-                icon: const Icon(Icons.pie_chart),
-                label: const Text('Статистика расходов'),
+              _buildWideButton(
+                icon: Icons.pie_chart,
+                text: 'Статистика расходов',
                 onPressed: () {
                   Navigator.push(
                     context,
@@ -123,8 +115,6 @@ class _HomeScreenState extends State<HomeScreen> {
                 },
               ),
               const SizedBox(height: 20),
-
-              // ---- мини-обзор по категориям ----
               if (totals.isNotEmpty) ...[
                 const Text(
                   'Быстрый обзор по категориям:',
@@ -134,7 +124,7 @@ class _HomeScreenState extends State<HomeScreen> {
                 Column(
                   children: totals.entries.map((e) {
                     return ListTile(
-                      leading: const Icon(Icons.label_outline),
+                      leading: const Icon(Icons.attach_money_outlined),
                       title: Text(e.key),
                       trailing: Text('${e.value.toStringAsFixed(2)} ₽'),
                     );
@@ -144,6 +134,34 @@ class _HomeScreenState extends State<HomeScreen> {
                 const Text('Пока нет расходов для анализа.'),
             ],
           ),
+        ),
+      ),
+    );
+  }
+
+  Widget _buildWideButton({
+    required IconData icon,
+    required String text,
+    required VoidCallback onPressed,
+  }) {
+    return SizedBox(
+      width: double.infinity,
+      height: 48,
+      child: ElevatedButton.icon(
+        icon: Icon(icon, size: 22),
+        label: Text(
+          text,
+          style: const TextStyle(fontSize: 16, fontWeight: FontWeight.w500),
+        ),
+        onPressed: onPressed,
+        style: ElevatedButton.styleFrom(
+          backgroundColor: Colors.white,
+          foregroundColor: Colors.deepPurple,
+          side: const BorderSide(color: Colors.deepPurple, width: 1.2),
+          shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.circular(10),
+          ),
+          elevation: 0,
         ),
       ),
     );
