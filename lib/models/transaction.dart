@@ -1,5 +1,5 @@
 class Transaction {
-  String type; // "Доход" или "Расход"
+  String type;
   String category;
   double amount;
   String comment;

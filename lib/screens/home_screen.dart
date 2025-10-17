@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import '../models/transaction.dart';
-import '../data/demo_data.dart'; // 👈 импорт стартовых данных
+import '../data/demo_data.dart';
 import 'add_transaction_screen.dart';
 import 'transactions_list_screen.dart';
 import 'statistics_screen.dart';
@@ -11,10 +11,8 @@ class HomeScreen extends StatefulWidget {
 }
 
 class _HomeScreenState extends State<HomeScreen> {
-  // Подгружаем стартовые данные
   List<Transaction> _transactions = List.from(demoTransactions);
 
-  // --- вычисление общего баланса ---
   double get _totalBalance {
     double income = _transactions
         .where((t) => t.type == 'Доход')

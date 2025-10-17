@@ -42,8 +42,6 @@ class _AddTransactionScreenState extends State<AddTransactionScreen> {
               style: TextStyle(fontSize: 16, fontWeight: FontWeight.w500),
             ),
             const SizedBox(height: 10),
-
-            // --- КРАСИВЫЙ ВЫБОР ТИПА (Доход / Расход) ---
             Row(
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
@@ -124,7 +122,6 @@ class _AddTransactionScreenState extends State<AddTransactionScreen> {
 
             const SizedBox(height: 20),
 
-            // --- поля ввода ---
             TextField(
               controller: _amountController,
               keyboardType: TextInputType.number,
@@ -152,7 +149,6 @@ class _AddTransactionScreenState extends State<AddTransactionScreen> {
 
             const SizedBox(height: 20),
 
-            // --- кнопка сохранить ---
             SizedBox(
               width: double.infinity,
               height: 48,

@@ -73,7 +73,6 @@ class StatisticsScreen extends StatelessWidget {
             ),
             const SizedBox(height: 10),
 
-            // --- Список категорий ---
             ListView.builder(
               physics: const NeverScrollableScrollPhysics(),
               shrinkWrap: true, // 👈 чтобы Column понимал высоту
